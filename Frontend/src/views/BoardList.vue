@@ -2,7 +2,12 @@
   <div>
     <h1>게시글 목록</h1>
     <div class="search-container">
-      <input type="text" v-model="searchKeyword" placeholder="검색어 입력" />
+      <input
+        type="text"
+        v-model="searchKeyword"
+        placeholder="검색어 입력"
+        @keyup.enter="search"
+      />
       <button @click="search">검색</button>
       <button @click="createBoard">게시글 작성</button>
     </div>
@@ -45,7 +50,13 @@ const fetchBoards = async () => {
 // 게시글 검색
 const search = async () => {
   try {
+    console.log("검색 시작 - 검색어:", searchKeyword.value);
+    if (!searchKeyword.value.trim()) {
+      await fetchBoards();
+      return;
+    }
     const response = await getBoards(searchKeyword.value);
+    console.log("검색 결과:", response);
     boards.value = response;
   } catch (error) {
     console.error("게시글 검색에 실패했습니다:", error);

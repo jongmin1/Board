@@ -17,13 +17,18 @@ const apiClient = axios.create({
 });
 
 // API 함수 정의
-export const getBoards = async () => {
+export const getBoards = async (keyword?: string) => {
   try {
-    const response = await apiClient.get('');
+    console.log('검색 요청 파라미터:', keyword);
+    const response = await apiClient.get('', {
+      params: {
+        keyword
+      }
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error('API 에러:', {
+      console.error('게시글 조회 에러:', {
         message: error.message,
         status: error.response?.status,
         data: error.response?.data

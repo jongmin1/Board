@@ -23,8 +23,11 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Board>> getAllBoards() {
-        log.info("게시글 목록 조회 요청");
+    public ResponseEntity<List<Board>> getAllBoards(@RequestParam(required = false) String keyword) {
+        log.info("게시글 목록 조회 요청 - 검색어: {}", keyword);
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            return ResponseEntity.ok(boardService.searchBoards(keyword));
+        }
         return ResponseEntity.ok(boardService.findAll());
     }
 
